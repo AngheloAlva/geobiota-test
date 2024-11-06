@@ -1,0 +1,21 @@
+{
+  "name": "Geobiota Test App",
+  "short_name": "Geobiota",
+  "theme_color": "#00ff00",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "type":"image/png",
+      "sizes":"192x192"
+    },
+    {
+      "src":"/icons/icon-256.png",
+      "type":"image/png",
+      "sizes":"256x256"
+    }
+  ]
+}
