@@ -2,24 +2,28 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useEffect } from "react"
 
 export default function HomePage() {
-	// useEffect(() => {
-	// 	if ("serviceWorker" in navigator && "SyncManager" in window) {
-	// 		navigator.serviceWorker
-	// 			.register("/service-worker.js")
-	// 			.then((registration) => {
-	// 				console.log("Service Worker registrado con éxito:", registration)
-	// 				return (registration as any).sync.register("sync-surveys")
-	// 			})
-	// 			.then(() => {
-	// 				console.log("Sync registrado con éxito")
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error("Error al registrar el Service Worker o Sync:", error)
-	// 			})
-	// 	}
-	// }, [])
+	useEffect(() => {
+		if ("serviceWorker" in navigator && "SyncManager" in window) {
+			navigator.serviceWorker
+				.register("/service-worker.js")
+				.then((registration) => {
+					console.log("Service Worker registered with scope:", registration.scope)
+
+					return (registration as ServiceWorkerRegistration & { sync: any }).sync.register(
+						"sync-surveys"
+					)
+				})
+				.then(() => {
+					console.log("Sync registered")
+				})
+				.catch((error) => {
+					console.error("Service Worker registration or Sync registration failed:", error)
+				})
+		}
+	}, [])
 
 	return (
 		<main className="h-screen w-full overflow-hidden bg-primary-g px-4 py-4">

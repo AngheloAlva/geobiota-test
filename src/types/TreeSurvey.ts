@@ -1,4 +1,5 @@
 export interface FullTreeSurvey {
+	id: number
 	sharedData: TreeSurveyShared
 	surveyData: TreeSurvey
 }

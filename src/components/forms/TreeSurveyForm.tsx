@@ -1,9 +1,7 @@
 "use client"
 
-import { saveSurvey, getAllSurveys, clearSurveys } from "@/lib/survey-storage"
 import { treeNames, treeTypes, contentSurveyOptions } from "@/lib/consts"
-import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,6 +25,8 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import type { TreeSurvey, FullTreeSurvey, TreeSurveyShared } from "@/types/TreeSurvey"
+
+const STORAGE_KEY = "treeSurveys"
 
 export default function TreeSurveyForm() {
 	const [formStep, setFormStep] = useState(0)
@@ -52,13 +52,9 @@ export default function TreeSurveyForm() {
 
 	const [error, setError] = useState<string | null>(null)
 
-	useEffect(() => {
-		const loadSurveys = async () => {
-			const loadedSurveys = await getAllSurveys()
-			setSurveys(loadedSurveys)
-		}
-		loadSurveys()
-	}, [])
+	const saveSurveysToStorage = (updatedSurveys: FullTreeSurvey[]) => {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSurveys))
+	}
 
 	const addNewSurvey = () => {
 		if (Object.values(surveyData).some((value) => value === "")) {
@@ -67,15 +63,13 @@ export default function TreeSurveyForm() {
 		}
 
 		const newSurvey: FullTreeSurvey = {
-			sharedData: {
-				treeType,
-				treeName,
-			},
 			surveyData,
+			id: Date.now(),
+			sharedData: { treeType, treeName },
 		}
 
-		setSurveys((prevSurveys) => [...prevSurveys, newSurvey])
-		saveSurvey(newSurvey)
+		const updatedSurveys = [...surveys, newSurvey]
+		setSurveys(updatedSurveys)
 
 		setSurveyData({
 			cobertura: "",
@@ -94,18 +88,9 @@ export default function TreeSurveyForm() {
 		})
 	}
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		if (formStep === 0) {
-			if (treeType === "" || treeName === "") {
-				setError("Por favor, seleccione el tipo y nombre del árbol.")
-				return
-			}
-			setFormStep(1)
-			setError(null)
-		} else {
-			addNewSurvey()
-		}
+		console.log("Form submitted")
 	}
 
 	const handleFinish = async () => {
@@ -114,19 +99,26 @@ export default function TreeSurveyForm() {
 			return
 		}
 
-		try {
-			// Aquí iría la lógica para enviar los datos al servidor
-			console.log("Enviando encuestas:", surveys)
-			// Simular una operación de envío
-			await new Promise((resolve) => setTimeout(resolve, 1000))
+		saveSurveysToStorage(surveys)
+		setFormStep(0)
+		setSurveys([])
+		setSurveyData({
+			cobertura: "",
+			exposicion: "",
+			drenaje: "",
+			topografia: "",
+			sustrato: "",
+			pendiente: "",
+			intervencion: "",
+			formacion: "",
+			coberturaTerrero: "",
+			porcentajePorEspecie: "",
+			desarrollo: "",
+			origen: "",
+			estadoSanitario: "",
+		})
 
-			// Limpiar las encuestas después de enviarlas
-			setSurveys([])
-			await clearSurveys()
-		} catch (error) {
-			console.log("Error al enviar encuestas:", error)
-			setError("Hubo un error al enviar las encuestas. Por favor, intente de nuevo.")
-		}
+		alert("Encuestas enviadas exitosamente.")
 	}
 
 	return (
@@ -197,7 +189,7 @@ export default function TreeSurveyForm() {
 						)}
 
 						{formStep === 1 && (
-							<>
+							<div className="grid gap-2 sm:grid-cols-2">
 								{contentSurveyOptions.map((option) => (
 									<Select
 										key={option.id}
@@ -225,17 +217,18 @@ export default function TreeSurveyForm() {
 										</SelectContent>
 									</Select>
 								))}
-							</>
+							</div>
 						)}
 
-						<div
-							className={cn("flex flex-wrap items-end justify-end", {
-								"justify-between": formStep === 1,
-							})}
-						>
+						<div className="flex flex-wrap items-end justify-center gap-2">
 							{formStep === 1 && (
 								<>
-									<Button size={"lg"} type="submit" className="mt-4 bg-primary-g">
+									<Button
+										size={"lg"}
+										type="button"
+										className="mt-4 bg-primary-g"
+										onClick={() => addNewSurvey()}
+									>
 										Agregar Encuesta
 									</Button>
 									<Button
@@ -250,7 +243,12 @@ export default function TreeSurveyForm() {
 							)}
 
 							{formStep === 0 && (
-								<Button size={"lg"} type="submit" className="mt-4 bg-primary-g">
+								<Button
+									size={"lg"}
+									type="button"
+									className="mt-4 bg-primary-g"
+									onClick={() => setFormStep(1)}
+								>
 									Continuar
 								</Button>
 							)}
