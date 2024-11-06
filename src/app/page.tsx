@@ -12,9 +12,16 @@ export default function HomePage() {
 				.then((registration) => {
 					console.log("Service Worker registered with scope:", registration.scope)
 
-					return (registration as ServiceWorkerRegistration & { sync: any }).sync.register(
-						"sync-surveys"
-					)
+					// Solicitar permisos de notificación
+					return Notification.requestPermission().then((permission) => {
+						if (permission === "granted") {
+							return (registration as ServiceWorkerRegistration & { sync: any }).sync.register(
+								"sync-surveys"
+							)
+						} else {
+							throw new Error("Notification permission denied")
+						}
+					})
 				})
 				.then(() => {
 					console.log("Sync registered")
