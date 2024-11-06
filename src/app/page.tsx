@@ -35,7 +35,7 @@ export default function HomePage() {
 
 	return (
 		<main className="h-screen w-full overflow-hidden bg-primary-g px-4 py-4">
-			<section className="flex h-full w-full flex-col items-center justify-center gap-4">
+			<section className="mx-auto flex h-full w-full max-w-screen-md flex-col items-center justify-center gap-4">
 				<Link href={"/forms/tree-survey-form"} className="w-full">
 					<Button className="h-auto w-full bg-secondary-2-g py-3 text-base font-bold">
 						Agregar datos

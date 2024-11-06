@@ -94,16 +94,6 @@ export default function TreeSurveyForm() {
 			return
 		}
 
-		if (Object.values(surveyData).some((value) => value === "")) {
-			toast({
-				title: "Campos vacíos",
-				description: "Por favor, complete todos los campos de la encuesta.",
-				variant: "destructive",
-				duration: 3000,
-			})
-			return
-		}
-
 		if (Object.values(surveyData).every((value) => value !== "")) {
 			addNewSurvey()
 		}
@@ -231,7 +221,7 @@ export default function TreeSurveyForm() {
 											setSurveyData({ ...surveyData, [option.id]: e })
 										}}
 									>
-										<SelectTrigger className="w-full rounded-sm border-none bg-secondary-g">
+										<SelectTrigger className="w-full min-w-full rounded-sm border-none bg-secondary-g">
 											<SelectValue placeholder={option.placeholder} />
 										</SelectTrigger>
 										<SelectContent className="border-none bg-secondary-g">
