@@ -2,6 +2,7 @@
 
 import { treeNames, treeTypes, contentSurveyOptions } from "@/lib/consts"
 import { useState } from "react"
+import { saveSurveysToDB } from "@/lib/survey-storage"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -26,8 +27,6 @@ import {
 
 import type { TreeSurvey, FullTreeSurvey, TreeSurveyShared } from "@/types/TreeSurvey"
 
-const STORAGE_KEY = "treeSurveys"
-
 export default function TreeSurveyForm() {
 	const [formStep, setFormStep] = useState(0)
 
@@ -51,10 +50,6 @@ export default function TreeSurveyForm() {
 	const [surveys, setSurveys] = useState<FullTreeSurvey[]>([])
 
 	const [error, setError] = useState<string | null>(null)
-
-	const saveSurveysToStorage = (updatedSurveys: FullTreeSurvey[]) => {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSurveys))
-	}
 
 	const addNewSurvey = () => {
 		if (Object.values(surveyData).some((value) => value === "")) {
@@ -99,7 +94,7 @@ export default function TreeSurveyForm() {
 			return
 		}
 
-		saveSurveysToStorage(surveys)
+		await saveSurveysToDB(surveys)
 		setFormStep(0)
 		setSurveys([])
 		setSurveyData({

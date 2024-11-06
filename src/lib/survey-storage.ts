@@ -1,87 +1,79 @@
 import { FullTreeSurvey } from "@/types/TreeSurvey"
 
-let db: IDBDatabase | null = null
+// indexedDB.js
+const DB_NAME = "SurveyDB"
+const DB_VERSION = 1
+const STORAGE_KEY = "treeSurveys"
 
-async function initDB() {
-	if (typeof window === "undefined") return null
-
-	return new Promise<IDBDatabase>((resolve, reject) => {
-		const request = indexedDB.open("TreeSurveyDB", 1)
-
-		request.onerror = () => reject("Error opening database")
-
-		request.onsuccess = (event) => {
-			db = (event.target as IDBOpenDBRequest).result
-			resolve(db)
-		}
+function openDB() {
+	return new Promise((resolve, reject) => {
+		const request = indexedDB.open(DB_NAME, DB_VERSION)
 
 		request.onupgradeneeded = (event) => {
 			const db = (event.target as IDBOpenDBRequest).result
-			db.createObjectStore("surveys", { keyPath: "id", autoIncrement: true })
+			db.createObjectStore(STORAGE_KEY, { keyPath: "id" })
+		}
+
+		request.onsuccess = (event) => {
+			resolve((event.target as IDBRequest).result as FullTreeSurvey[])
+		}
+
+		request.onerror = (event) => {
+			reject((event.target as IDBOpenDBRequest).error)
 		}
 	})
 }
 
-export async function saveSurvey(survey: FullTreeSurvey): Promise<number> {
-	if (!db) await initDB()
-	if (!db) throw new Error("Database not initialized")
+export function saveSurveysToDB(surveys: FullTreeSurvey[]): Promise<void> {
+	return new Promise(async (resolve, reject) => {
+		const db = (await openDB()) as IDBDatabase
+		const transaction = db.transaction(STORAGE_KEY, "readwrite")
+		const store = transaction.objectStore(STORAGE_KEY)
 
-	return new Promise((resolve, reject) => {
-		if (!db) throw new Error("Database not initialized")
+		surveys.forEach((survey) => {
+			store.put(survey)
+		})
 
-		const transaction = db.transaction(["surveys"], "readwrite")
-		const store = transaction.objectStore("surveys")
-		const request = store.add(survey)
+		transaction.oncomplete = () => {
+			resolve()
+		}
 
-		request.onerror = () => reject("Error adding survey")
-		request.onsuccess = () => resolve(request.result as number)
+		transaction.onerror = (event) => {
+			reject((event.target as IDBOpenDBRequest).error)
+		}
 	})
 }
 
-export async function getAllSurveys(): Promise<FullTreeSurvey[]> {
-	if (!db) await initDB()
-	if (!db) return []
-
-	return new Promise((resolve, reject) => {
-		if (!db) throw new Error("Database not initialized")
-
-		const transaction = db.transaction(["surveys"], "readonly")
-		const store = transaction.objectStore("surveys")
+export function getSurveysFromDB(): Promise<FullTreeSurvey[]> {
+	return new Promise(async (resolve, reject) => {
+		const db = (await openDB()) as IDBDatabase
+		const transaction = db.transaction(STORAGE_KEY, "readonly")
+		const store = transaction.objectStore(STORAGE_KEY)
 		const request = store.getAll()
 
-		request.onerror = () => reject("Error getting surveys")
-		request.onsuccess = () => resolve(request.result)
-	})
+		request.onsuccess = (event) => {
+			resolve((event.target as IDBRequest).result as FullTreeSurvey[])
+		}
+
+		request.onerror = (event) => {
+			reject((event.target as IDBOpenDBRequest).error)
+		}
+	}) as Promise<FullTreeSurvey[]>
 }
 
-export async function deleteSurvey(id: number): Promise<void> {
-	if (!db) await initDB()
-	if (!db) throw new Error("Database not initialized")
-
-	return new Promise((resolve, reject) => {
-		if (!db) throw new Error("Database not initialized")
-
-		const transaction = db.transaction(["surveys"], "readwrite")
-		const store = transaction.objectStore("surveys")
-		const request = store.delete(id)
-
-		request.onerror = () => reject("Error deleting survey")
-		request.onsuccess = () => resolve()
-	})
-}
-
-export async function clearSurveys(): Promise<void> {
-	if (!db) await initDB()
-	if (!db) throw new Error("Database not initialized")
-
-	return new Promise((resolve, reject) => {
-		if (!db) throw new Error("Database not initialized")
-
-		const transaction = db.transaction(["surveys"], "readwrite")
-		const store = transaction.objectStore("surveys")
+export function clearSurveysFromDB() {
+	return new Promise<void>(async (resolve, reject) => {
+		const db = (await openDB()) as IDBDatabase
+		const transaction = db.transaction(STORAGE_KEY, "readwrite")
+		const store = transaction.objectStore(STORAGE_KEY)
 		const request = store.clear()
 
-		request.onerror = () => reject("Error clearing surveys")
-		request.onsuccess = () => resolve()
+		request.onsuccess = () => {
+			resolve()
+		}
+
+		request.onerror = (event) => {
+			reject((event.target as IDBOpenDBRequest).error)
+		}
 	})
 }

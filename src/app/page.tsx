@@ -8,7 +8,7 @@ export default function HomePage() {
 	useEffect(() => {
 		if ("serviceWorker" in navigator && "SyncManager" in window) {
 			navigator.serviceWorker
-				.register("/service-worker.js")
+				.register("/sw.js")
 				.then((registration) => {
 					console.log("Service Worker registered with scope:", registration.scope)
 

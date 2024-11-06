@@ -2,17 +2,18 @@
 
 import type { FullTreeSurvey } from "@/types/TreeSurvey"
 import { useEffect, useState } from "react"
-
-const STORAGE_KEY = "treeSurveys"
+import { getSurveysFromDB } from "@/lib/survey-storage"
 
 export default function SurveyListPage(): React.ReactElement {
 	const [surveys, setSurveys] = useState<FullTreeSurvey[]>([])
 
 	useEffect(() => {
-		const savedSurveys = localStorage.getItem(STORAGE_KEY)
-		if (savedSurveys) {
-			setSurveys(JSON.parse(savedSurveys))
+		const fetchSurveys = async () => {
+			const savedSurveys = await getSurveysFromDB()
+			setSurveys(savedSurveys)
 		}
+
+		fetchSurveys()
 	}, [])
 
 	return (
