@@ -11,7 +11,7 @@ async function initDB() {
 	})
 }
 
-export async function login(username: string, password: string) {
+export async function login(username: string) {
 	// Aquí deberías hacer una llamada a tu API de autenticación
 	// Por ahora, simularemos una autenticación exitosa
 	const token = `fake-jwt-token-${username}`

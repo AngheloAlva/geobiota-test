@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useEffect } from "react"
 
 export default function HomePage() {
 	// useEffect(() => {

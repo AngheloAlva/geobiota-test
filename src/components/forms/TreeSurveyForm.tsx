@@ -124,6 +124,7 @@ export default function TreeSurveyForm() {
 			setSurveys([])
 			await clearSurveys()
 		} catch (error) {
+			console.log("Error al enviar encuestas:", error)
 			setError("Hubo un error al enviar las encuestas. Por favor, intente de nuevo.")
 		}
 	}

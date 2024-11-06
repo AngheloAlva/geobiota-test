@@ -8,7 +8,7 @@ async function initDB() {
 	return new Promise<IDBDatabase>((resolve, reject) => {
 		const request = indexedDB.open("TreeSurveyDB", 1)
 
-		request.onerror = (event) => reject("Error opening database")
+		request.onerror = () => reject("Error opening database")
 
 		request.onsuccess = (event) => {
 			db = (event.target as IDBOpenDBRequest).result

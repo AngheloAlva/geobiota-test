@@ -9,13 +9,12 @@ import { login } from "@/lib/auth"
 
 export default function LoginForm() {
 	const [username, setUsername] = useState("")
-	const [password, setPassword] = useState("")
 	const router = useRouter()
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		try {
-			await login(username, password)
+			await login(username)
 			router.push("/home")
 		} catch (error) {
 			console.error("Error durante el inicio de sesión:", error)
@@ -42,13 +41,6 @@ export default function LoginForm() {
 					</div>
 					<div className="space-y-2">
 						<label htmlFor="password">Contraseña</label>
-						<Input
-							id="password"
-							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
 					</div>
 					<Button type="submit" className="w-full">
 						Ingresar
