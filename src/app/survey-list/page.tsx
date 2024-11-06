@@ -3,6 +3,7 @@
 import type { FullTreeSurvey } from "@/types/TreeSurvey"
 import { useEffect, useState } from "react"
 import { getSurveysFromDB } from "@/lib/survey-storage"
+import { InfoCircledIcon } from "@radix-ui/react-icons"
 
 export default function SurveyListPage(): React.ReactElement {
 	const [surveys, setSurveys] = useState<FullTreeSurvey[]>([])
@@ -18,6 +19,13 @@ export default function SurveyListPage(): React.ReactElement {
 
 	return (
 		<div className="flex flex-col gap-2">
+			{surveys.length === 0 && (
+				<div className="flex gap-2 rounded-sm bg-secondary-g p-4 font-medium">
+					<InfoCircledIcon className="h-6 w-6 text-primary-g" />
+					<p>No hay encuestas guardadas localmente</p>
+				</div>
+			)}
+
 			{surveys.map(({ sharedData, surveyData, id }) => (
 				<div key={id} className="rounded-sm bg-secondary-g p-2">
 					<h2 className="mb-2 font-bold">

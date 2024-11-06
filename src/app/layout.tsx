@@ -1,21 +1,12 @@
-import localFont from "next/font/local"
+import "@fontsource-variable/roboto-mono"
+import Link from "next/link"
+
+import { Toaster } from "@/components/ui/toaster"
+import Logo from "@/components/icons/Logo"
 
 import type { Metadata, Viewport } from "next"
 
 import "./globals.css"
-import Logo from "@/components/icons/Logo"
-import Link from "next/link"
-
-const geistSans = localFont({
-	src: "./fonts/GeistVF.woff",
-	variable: "--font-geist-sans",
-	weight: "400 500 600 700 800 900",
-})
-const geistMono = localFont({
-	src: "./fonts/GeistMonoVF.woff",
-	variable: "--font-geist-mono",
-	weight: "400 500 600 700 800 900",
-})
 
 const APP_NAME = "PWA App"
 const APP_DEFAULT_TITLE = "My Awesome PWA App"
@@ -68,17 +59,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="es">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} h-screen min-h-screen bg-primary-g antialiased`}
-			>
+			<body className={`h-screen min-h-screen bg-primary-g antialiased`}>
 				<nav className="fixed left-0 right-0 top-0 bg-primary-g px-4 py-4 shadow">
 					<Link href="/">
 						<Logo className="text-secondary-g" />
 					</Link>
 				</nav>
-				<div className="flex min-h-full w-full items-center justify-center px-4 py-16">
-					{children}
-				</div>
+				<div className="flex h-full w-full items-center justify-center px-4 py-16">{children}</div>
+				<Toaster />
 			</body>
 		</html>
 	)
