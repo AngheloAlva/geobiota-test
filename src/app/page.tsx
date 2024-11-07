@@ -14,7 +14,7 @@ export default function HomePage() {
 	useEffect(() => {
 		const syncSurveys = async () => {
 			const surveys = await getSurveysFromDB()
-			if (surveys.length > 0) {
+			if (surveys.length > 0 && navigator.onLine) {
 				try {
 					await sendData(surveys)
 					toast({
