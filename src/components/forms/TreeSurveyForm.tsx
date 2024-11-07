@@ -47,20 +47,10 @@ export default function TreeSurveyForm() {
 		estadoSanitario: "",
 	})
 	const [surveys, setSurveys] = useState<FullTreeSurvey[]>([])
-	const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null)
-	const [image, setImage] = useState<string | null>(null)
-	const fileInputRef = useRef<HTMLInputElement>(null)
-
-	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.onloadend = () => {
-				setImage(reader.result as string)
-			}
-			reader.readAsDataURL(file)
-		}
-	}
+	const [location, setLocation] = useState<{ latitude: number; longitude: number }>({
+		latitude: 0,
+		longitude: 0,
+	})
 
 	const addNewSurvey = async () => {
 		if (Object.values(surveyData).some((value) => value === "")) {
@@ -94,8 +84,7 @@ export default function TreeSurveyForm() {
 			surveyData,
 			id: Date.now(),
 			sharedData: { treeType, treeName },
-			location,
-			image,
+			location: location === null ? { latitude: 0, longitude: 0 } : location,
 		}
 
 		const updatedSurveys = [...surveys, newSurvey]
@@ -116,10 +105,6 @@ export default function TreeSurveyForm() {
 			origen: "",
 			estadoSanitario: "",
 		})
-		setImage(null)
-		if (fileInputRef.current) {
-			fileInputRef.current.value = ""
-		}
 	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -284,7 +269,7 @@ export default function TreeSurveyForm() {
 							</div>
 						)}
 
-						{formStep === 1 && (
+						{/* {formStep === 1 && (
 							<div className="grid gap-1.5">
 								<Label>Imagen del árbol</Label>
 								<Input
@@ -295,7 +280,7 @@ export default function TreeSurveyForm() {
 									className="w-full border-none bg-secondary-g"
 								/>
 							</div>
-						)}
+						)} */}
 
 						<div className="mt-4 flex flex-wrap items-end justify-center gap-2">
 							{formStep === 1 && (

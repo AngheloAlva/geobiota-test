@@ -5,8 +5,8 @@ export interface FullTreeSurvey {
 	location: {
 		latitude: number
 		longitude: number
-	} | null
-	image: string | null
+	}
+	// image: string | null
 }
 
 export interface TreeSurveyShared {
