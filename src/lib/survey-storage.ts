@@ -1,6 +1,5 @@
 import { FullTreeSurvey } from "@/types/TreeSurvey"
 
-// indexedDB.js
 const DB_NAME = "SurveyDB"
 const DB_VERSION = 1
 const STORAGE_KEY = "treeSurveys"
@@ -8,16 +7,13 @@ const STORAGE_KEY = "treeSurveys"
 function openDB() {
 	return new Promise((resolve, reject) => {
 		const request = indexedDB.open(DB_NAME, DB_VERSION)
-
 		request.onupgradeneeded = (event) => {
 			const db = (event.target as IDBOpenDBRequest).result
 			db.createObjectStore(STORAGE_KEY, { keyPath: "id" })
 		}
-
 		request.onsuccess = (event) => {
-			resolve((event.target as IDBRequest).result as FullTreeSurvey[])
+			resolve((event.target as IDBRequest).result as IDBDatabase)
 		}
-
 		request.onerror = (event) => {
 			reject((event.target as IDBOpenDBRequest).error)
 		}
@@ -29,18 +25,11 @@ export function saveSurveysToDB(surveys: FullTreeSurvey[]): Promise<void> {
 		const db = (await openDB()) as IDBDatabase
 		const transaction = db.transaction(STORAGE_KEY, "readwrite")
 		const store = transaction.objectStore(STORAGE_KEY)
-
 		surveys.forEach((survey) => {
 			store.put(survey)
 		})
-
-		transaction.oncomplete = () => {
-			resolve()
-		}
-
-		transaction.onerror = (event) => {
-			reject((event.target as IDBOpenDBRequest).error)
-		}
+		transaction.oncomplete = () => resolve()
+		transaction.onerror = () => reject(transaction.error)
 	})
 }
 

@@ -3,7 +3,7 @@
 import { treeNames, treeTypes, contentSurveyOptions } from "@/lib/consts"
 import { saveSurveysToDB } from "@/lib/survey-storage"
 import { useToast } from "@/hooks/use-toast"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,8 @@ import {
 import type { TreeSurvey, FullTreeSurvey, TreeSurveyShared } from "@/types/TreeSurvey"
 import { sendData } from "@/lib/sendData"
 import { cn } from "@/lib/utils"
+import { getGeolocation } from "@/lib/geolocation"
+import { Input } from "../ui/input"
 
 export default function TreeSurveyForm() {
 	const { toast } = useToast()
@@ -45,8 +47,22 @@ export default function TreeSurveyForm() {
 		estadoSanitario: "",
 	})
 	const [surveys, setSurveys] = useState<FullTreeSurvey[]>([])
+	const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null)
+	const [image, setImage] = useState<string | null>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null)
 
-	const addNewSurvey = () => {
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onloadend = () => {
+				setImage(reader.result as string)
+			}
+			reader.readAsDataURL(file)
+		}
+	}
+
+	const addNewSurvey = async () => {
 		if (Object.values(surveyData).some((value) => value === "")) {
 			toast({
 				title: "Campos vacíos",
@@ -57,10 +73,29 @@ export default function TreeSurveyForm() {
 			return
 		}
 
+		try {
+			const position = await getGeolocation()
+			setLocation({
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
+			})
+		} catch (error) {
+			console.error("Error obteniendo la geolocalización:", error)
+			toast({
+				title: "Error de geolocalización",
+				description: "No se pudo obtener la ubicación.",
+				variant: "destructive",
+				duration: 3000,
+			})
+			return
+		}
+
 		const newSurvey: FullTreeSurvey = {
 			surveyData,
 			id: Date.now(),
 			sharedData: { treeType, treeName },
+			location,
+			image,
 		}
 
 		const updatedSurveys = [...surveys, newSurvey]
@@ -81,16 +116,21 @@ export default function TreeSurveyForm() {
 			origen: "",
 			estadoSanitario: "",
 		})
+		setImage(null)
+		if (fileInputRef.current) {
+			fileInputRef.current.value = ""
+		}
 	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
+
 		if (surveys.length === 0) {
 			toast({
 				title: "Encuestas vacías",
 				description: "Por favor, complete al menos una encuesta.",
 				variant: "destructive",
-				duration: 300,
+				duration: 3000,
 			})
 			return
 		}
@@ -241,6 +281,19 @@ export default function TreeSurveyForm() {
 										</SelectContent>
 									</Select>
 								))}
+							</div>
+						)}
+
+						{formStep === 1 && (
+							<div className="grid gap-1.5">
+								<Label>Imagen del árbol</Label>
+								<Input
+									type="file"
+									accept="image/*"
+									ref={fileInputRef}
+									onChange={handleImageChange}
+									className="w-full border-none bg-secondary-g"
+								/>
 							</div>
 						)}
 

@@ -2,6 +2,11 @@ export interface FullTreeSurvey {
 	id: number
 	sharedData: TreeSurveyShared
 	surveyData: TreeSurvey
+	location: {
+		latitude: number
+		longitude: number
+	} | null
+	image: string | null
 }
 
 export interface TreeSurveyShared {
