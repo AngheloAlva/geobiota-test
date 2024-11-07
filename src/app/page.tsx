@@ -1,6 +1,6 @@
 "use client"
 
-import { getSurveysFromDB, saveSurveysToDB } from "@/lib/survey-storage"
+import { clearSurveysFromDB, getSurveysFromDB, saveSurveysToDB } from "@/lib/survey-storage"
 import { useToast } from "@/hooks/use-toast"
 import { sendData } from "@/lib/sendData"
 import { useEffect } from "react"
@@ -23,7 +23,7 @@ export default function HomePage() {
 						duration: 3000,
 					})
 
-					await saveSurveysToDB([])
+					await clearSurveysFromDB()
 				} catch (error) {
 					console.error("Error al enviar los datos:", error)
 					toast({
