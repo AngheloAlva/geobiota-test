@@ -18,7 +18,7 @@ export default function SurveyListPage(): React.ReactElement {
 	}, [])
 
 	return (
-		<div className="flex flex-col gap-2">
+		<main className="flex min-h-full w-full items-center justify-center overflow-hidden bg-primary-g px-4 py-16">
 			{surveys.length === 0 && (
 				<div className="flex gap-2 rounded-sm bg-secondary-g p-4 font-medium">
 					<InfoCircledIcon className="h-6 w-6 text-primary-g" />
@@ -73,6 +73,6 @@ export default function SurveyListPage(): React.ReactElement {
 					</p>
 				</div>
 			))}
-		</div>
+		</main>
 	)
 }

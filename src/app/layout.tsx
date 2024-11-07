@@ -60,12 +60,12 @@ export default function RootLayout({
 	return (
 		<html lang="es">
 			<body className={`h-screen min-h-screen bg-primary-g antialiased`}>
-				<nav className="fixed left-0 right-0 top-0 bg-primary-g px-4 py-4 shadow">
+				<nav className="fixed left-0 right-0 top-0 z-10 bg-primary-g px-4 py-4 shadow">
 					<Link href="/">
 						<Logo className="text-secondary-g" />
 					</Link>
 				</nav>
-				<div className="flex h-full w-full items-center justify-center px-4 py-16">{children}</div>
+				{children}
 				<Toaster />
 			</body>
 		</html>

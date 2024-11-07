@@ -20,6 +20,7 @@ import {
 
 import type { TreeSurvey, FullTreeSurvey, TreeSurveyShared } from "@/types/TreeSurvey"
 import { sendData } from "@/lib/sendData"
+import { cn } from "@/lib/utils"
 
 export default function TreeSurveyForm() {
 	const { toast } = useToast()
@@ -157,7 +158,7 @@ export default function TreeSurveyForm() {
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-4">
 						{formStep === 0 && (
-							<div className="grid gap-2 sm:grid-cols-2">
+							<div className={cn("grid gap-2", { "sm:grid-cols-2": treeType })}>
 								<div className="grid gap-1.5">
 									<Label>Tipo de árbol</Label>
 									<Select
