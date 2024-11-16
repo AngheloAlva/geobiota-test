@@ -1,12 +1,6 @@
 export default function Logo({ className }: { className?: string }): React.ReactElement {
 	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="76"
-			height="19.246"
-			viewBox="0 0 76 19.246"
-			className={className}
-		>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 19.246" className={className}>
 			<g data-name="Grupo 343">
 				<g data-name="Grupo 289" fill="currentColor">
 					<path

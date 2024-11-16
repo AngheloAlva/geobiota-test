@@ -1,8 +1,7 @@
 import "@fontsource-variable/roboto-mono"
-import Link from "next/link"
 
 import { Toaster } from "@/components/ui/toaster"
-import Logo from "@/components/icons/Logo"
+import Navbar from "@/components/navbar/Navbar"
 
 import type { Metadata, Viewport } from "next"
 
@@ -59,12 +58,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="es">
-			<body className={`h-screen min-h-screen bg-primary-g antialiased`}>
-				<nav className="fixed left-0 right-0 top-0 z-10 bg-primary-g px-4 py-4 shadow">
-					<Link href="/">
-						<Logo className="text-secondary-g" />
-					</Link>
-				</nav>
+			<body className={`relative h-screen min-h-screen antialiased`}>
+				<Navbar />
+				<div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-900 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,#278e6c80,rgba(255,255,255,0))]"></div>
+
 				{children}
 				<Toaster />
 			</body>

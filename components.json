@@ -3,6 +3,7 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
+  "iconLibrary": "react-icons",
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "src/app/globals.css",
