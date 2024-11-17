@@ -1,22 +1,24 @@
 import Dexie, { type EntityTable } from "dexie"
 
-import type { Project, Plot, Coverage, Species, Synchronization } from "./types"
+import type { Project, Plot, CoveragePlot, Transect, Synchronization, COT } from "./types"
 
 const db = new Dexie("Geobiota") as Dexie & {
 	projects: EntityTable<Project, "id">
 	plots: EntityTable<Plot, "id">
-	coverages: EntityTable<Coverage, "id">
-	species: EntityTable<Species, "id">
+	coveragePlots: EntityTable<CoveragePlot, "id">
+	transects: EntityTable<Transect, "id">
 	synchronizations: EntityTable<Synchronization, "id">
+	cots: EntityTable<COT, "id">
 }
 
 db.version(1).stores({
-	projects: "++id, name, year, client, createdAt, seasonality, synchronized",
-	plots: "++id, name, area, dimensions, createdAt, projectId, synchronized",
-	coverages:
-		"++id, area, plotId, specie, createdAt, coverage, diameter1, diameter2, numberOfCopies, synchronized",
-	species: "++id, name, lifeForm, observations, coverageRange",
-	synchronizations: "++id, table, status, error, createdAt, registerId",
+	projects: "++id, name, year, client, status, createdAt, seasonality, synchronized",
+	plots:
+		"++id, name, status, createdAt, updatedAt, images, projectId, synchronized, dimensions, gps",
+	coveragePlots: "++id, plotId, lifeForm, cover, species, createdAt",
+	transects: "++id, plotId, totalLongitude, transects, createdAt",
+	synchronizations: "++id, table, tries, error, status, createdAt, registerId",
+	cots: "++id, plotId, group1, group2, group3, group4",
 })
 
 export { db }

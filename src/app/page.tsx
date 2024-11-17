@@ -1,79 +1,40 @@
 "use client"
 
-// import { useToast } from "@/hooks/use-toast"
+import { getGeolocation } from "@/lib/geolocation"
 import { PROJECTS } from "@/lib/consts/projects"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 
+import { IoAdd, IoLocation, IoSync, IoWifi } from "react-icons/io5"
 import { Button } from "@/components/ui/button"
-import { IoMdSync } from "react-icons/io"
+import Card from "@/components/shared/Card"
 
 export default function HomePage() {
-	// const { toast } = useToast()
+	const [online, setOnline] = useState<boolean>(false)
+	const [geolocation, setGeolocation] = useState<string>("")
 
-	// useEffect(() => {
-	// 	const syncSurveys = async () => {
-	// 		const surveys = await getSurveysFromDB()
-	// 		if (surveys.length > 0 && navigator.onLine) {
-	// 			try {
-	// 				await sendData(surveys)
-	// 				toast({
-	// 					title: "Datos sincronizados",
-	// 					description: "Los datos se han enviado correctamente.",
-	// 					duration: 3000,
-	// 				})
+	useEffect(() => {
+		setOnline(navigator.onLine)
 
-	// 				await clearSurveysFromDB()
-	// 			} catch (error) {
-	// 				console.error("Error al enviar los datos:", error)
-	// 				toast({
-	// 					title: "Error de sincronización",
-	// 					description: "No se pudieron enviar los datos. Se intentará nuevamente más tarde.",
-	// 					variant: "destructive",
-	// 					duration: 3000,
-	// 				})
-	// 			}
-	// 		}
-	// 	}
-
-	// 	if ("serviceWorker" in navigator && "SyncManager" in window) {
-	// 		navigator.serviceWorker
-	// 			.register("/sw.js")
-	// 			.then((registration) => {
-	// 				console.log("Service Worker registered with scope:", registration.scope)
-
-	// 				return Notification.requestPermission().then((permission) => {
-	// 					if (permission === "granted") {
-	// 						return (registration as ServiceWorkerRegistration & { sync: any }).sync.register(
-	// 							"sync-surveys"
-	// 						)
-	// 					} else {
-	// 						throw new Error("Notification permission denied")
-	// 					}
-	// 				})
-	// 			})
-	// 			.then(() => {
-	// 				console.log("Sync registered")
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error("Service Worker registration or Sync registration failed:", error)
-	// 				void syncSurveys()
-	// 			})
-	// 	} else {
-	// 		void syncSurveys()
-	// 	}
-	// }, [])
+		getGeolocation()
+			.then((position) =>
+				setGeolocation(position.coords.latitude + ", " + position.coords.longitude)
+			)
+			.catch((error) => console.log(error))
+	}, [])
 
 	return (
-		<main className="mx-auto grid w-full max-w-screen-lg grid-cols-1 items-center justify-center gap-y-6 overflow-hidden px-4 py-24 md:px-6 xl:px-0">
-			<section className="flex w-full flex-col rounded-2xl bg-black/30 p-4 text-white">
-				<h2 className="text-2xl font-bold">Lista de Projectos</h2>
-				<p className="text-sm text-neutral-400">
-					Aquí podrás ver todos los proyectos registrados y acceder a cada uno de ellos.
-				</p>
-
-				<ul className="mt-4 flex flex-col gap-4">
+		<main className="mx-auto grid w-full max-w-screen-lg grid-cols-1 items-center justify-center gap-x-4 gap-y-6 overflow-hidden px-4 py-24 md:grid-cols-2 md:px-6 xl:px-0">
+			<Card
+				title="Lista de Projectos"
+				description="Aquí podrás ver todos los proyectos registrados y acceder a cada uno de ellos."
+			>
+				<ul className="flex flex-col gap-4">
 					{PROJECTS.map((project) => (
-						<li key={project.id} className="rounded-2xl bg-black/30">
+						<li
+							key={project.id}
+							className="rounded-2xl bg-black/30 transition-colors hover:bg-black/50"
+						>
 							<Link href={`/project/${project.id}`} className="flex flex-col gap-2 px-4 py-3">
 								<div className="flex flex-wrap items-center justify-between gap-2">
 									<p className="text-lg font-bold">{project.name}</p>
@@ -88,22 +49,32 @@ export default function HomePage() {
 						</li>
 					))}
 				</ul>
-			</section>
+			</Card>
 
-			<section className="flex w-full flex-col gap-4 rounded-2xl bg-black/30 p-4 text-white">
-				<h2 className="text-2xl font-bold">Información</h2>
+			<div className="flex h-full w-full flex-col gap-x-4 gap-y-6">
+				<Card title="Información">
+					{/* TODO: Add information about the app, like internet connection, service worker, space used, permissions, etc. */}
+					<p className="flex items-center gap-2">
+						<IoWifi /> {online ? "Conectado" : "Desconectado"}
+					</p>
+					<p className="flex items-center gap-2">
+						<IoLocation /> {geolocation}
+					</p>
+				</Card>
 
-				{/* TODO: Add information about the app, like internet connection, service worker, space used, etc. */}
-			</section>
+				<Card title="Acciones">
+					{/* TODO: Add more actions, like delete data already synchronized, theme, etc. */}
+					<Link href="/cot">
+						<Button className="h-12 w-full bg-black/30 text-base hover:bg-black/50" size="lg">
+							Crear COT <IoAdd />
+						</Button>
+					</Link>
 
-			<section className="flex w-full flex-col gap-4 rounded-2xl bg-black/30 p-4 text-white">
-				<h2 className="text-2xl font-bold">Información</h2>
-
-				{/* TODO: Add more actions, like delete data already synchronized, theme, etc. */}
-				<Button className="h-12 w-full bg-black/30 text-base hover:bg-black/50" size="lg">
-					Sincronizar datos <IoMdSync />
-				</Button>
-			</section>
+					<Button className="h-12 w-full bg-black/30 text-base hover:bg-black/50" size="lg">
+						Sincronizar datos <IoSync />
+					</Button>
+				</Card>
+			</div>
 		</main>
 	)
 }
