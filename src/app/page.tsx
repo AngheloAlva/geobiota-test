@@ -64,11 +64,6 @@ export default function HomePage() {
 
 				<Card title="Acciones">
 					{/* TODO: Add more actions, like delete data already synchronized, theme, etc. */}
-					<Link href="/cot">
-						<Button className="h-12 w-full bg-black/30 text-base hover:bg-black/50" size="lg">
-							Crear COT <IoAdd />
-						</Button>
-					</Link>
 
 					<Button className="h-12 w-full bg-black/30 text-base hover:bg-black/50" size="lg">
 						Sincronizar datos <IoSync />

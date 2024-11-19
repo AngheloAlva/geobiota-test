@@ -52,7 +52,7 @@ export interface COT {
 		drainage: string
 		topography: string
 		susbtract: string
-		slope: number
+		slope: string
 		intervention: string
 	}
 	group4?: {

@@ -4,7 +4,7 @@ import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { Cross2Icon } from "@radix-ui/react-icons"
+import { IoClose } from "react-icons/io5"
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -29,7 +29,7 @@ const toastVariants = cva(
 		variants: {
 			variant: {
 				default:
-					"border border-secondary-2-g bg-secondary-2-g text-stone-950 dark:bg-stone-950 dark:text-stone-50",
+					"border border-green-500/30 bg-green-500/30 text-white dark:bg-stone-950 dark:text-stone-50",
 				destructive:
 					"destructive group border-red-900 bg-red-900 text-stone-50 dark:border-red-900 dark:bg-red-900 dark:text-stone-50",
 			},
@@ -82,7 +82,7 @@ const ToastClose = React.forwardRef<
 		toast-close=""
 		{...props}
 	>
-		<Cross2Icon className="h-5 w-5" />
+		<IoClose className="h-5 w-5 text-white" />
 	</ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName

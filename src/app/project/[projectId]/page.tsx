@@ -1,6 +1,7 @@
 import { PROJECTS } from "@/lib/consts/projects"
 import { PLOTS } from "@/lib/consts/plots"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 import TextWithIcon from "@/components/shared/TextWithIcon"
 import Card from "@/components/shared/Card"
@@ -11,14 +12,16 @@ import {
 	IoResizeOutline,
 	IoLocationOutline,
 	IoPartlySunnyOutline,
+	IoArrowForwardCircleOutline,
 } from "react-icons/io5"
 
 export default async function ProjectPage({
 	params,
 }: {
-	params: { projectId: string }
+	params: Promise<{ projectId: string }>
 }): Promise<React.ReactElement> {
-	const projectId = (await params).projectId
+	const { projectId } = await params
+
 	const project = PROJECTS.find((project) => project.id === projectId)
 
 	return (
@@ -51,7 +54,7 @@ export default async function ProjectPage({
 								<TextWithIcon icon={<IoImagesOutline />} text={plot.images?.length ?? 0} />
 								<TextWithIcon
 									icon={<IoLocationOutline />}
-									text={`lat: ${plot.gps.latitude} - long: ${plot.gps.longitude}`}
+									text={`lat: ${plot.gps.latitude}, long: ${plot.gps.longitude}`}
 								/>
 								<TextWithIcon
 									icon={<IoResizeOutline />}
@@ -68,14 +71,17 @@ export default async function ProjectPage({
 									<IoSyncOutline /> {plot.synchronized ? "Sincronizado" : "No sincronizado"}
 								</p>
 
-								{/* <div className="flex gap-2">
-									<Button className="w-full bg-black/30 text-base hover:bg-black/50">
+								<div className="flex gap-2">
+									{/* <Button className="w-full bg-black/30 text-base hover:bg-black/50">
 										<IoPencilOutline />
 									</Button>
 									<Button className="w-full bg-black/30 text-base hover:bg-black/50">
 										<IoTrashOutline />
-									</Button>
-								</div> */}
+									</Button> */}
+									<Link href={`/project/${projectId}/parcela/${plot.id}`}>
+										<IoArrowForwardCircleOutline className="text-3xl text-neutral-500 transition-colors hover:text-white" />
+									</Link>
+								</div>
 							</div>
 						</div>
 					</div>
