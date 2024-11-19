@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { PLOTS } from "@/lib/consts/plots"
 
 import Card from "@/components/shared/Card"
@@ -5,18 +8,34 @@ import { IoSyncOutline, IoLocationOutline, IoPartlySunnyOutline } from "react-ic
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db"
+import { COT, Plot } from "@/db/types"
 
-export default async function ParcelaPage({
+export default function ParcelaPage({
 	params,
 }: {
 	params: Promise<{ projectId: string; parcelaId: string }>
-}): Promise<React.ReactElement> {
-	const projectId = (await params).projectId
-	const parcelaId = (await params).parcelaId
+}): React.ReactElement {
+	const [cot, setCot] = useState<COT[]>([])
+	const [parcela, setParcela] = useState<Plot | null>(null)
+	const [projectId, setProjectId] = useState<string>("")
+	const [parcelaId, setParcelaId] = useState<string>("")
 
-	const cot = await db.cots.where("plotId").equals(parcelaId).toArray()
+	useEffect(() => {
+		const fetchData = async () => {
+			if (typeof window !== "undefined") {
+				const { projectId, parcelaId } = await params
+				setProjectId(projectId)
+				setParcelaId(parcelaId)
 
-	const parcela = PLOTS.find((plot) => plot.id === parcelaId)
+				const cotData = await db.cots.where("plotId").equals(parcelaId).toArray()
+				setCot(cotData)
+				const parcelaData = PLOTS.find((plot) => plot.id === parcelaId)
+				setParcela(parcelaData ?? null)
+			}
+		}
+
+		fetchData()
+	}, [params])
 
 	return (
 		<main className="mx-auto grid w-full max-w-screen-lg grid-cols-1 items-center justify-center gap-x-4 gap-y-6 overflow-hidden px-4 py-24 md:grid-cols-2 md:px-6 xl:px-0">
