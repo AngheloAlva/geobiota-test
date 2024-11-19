@@ -1,11 +1,8 @@
-// TODO: Remove fake-indexeddb
-
-import { indexedDB, IDBKeyRange } from "fake-indexeddb"
 import Dexie, { type EntityTable } from "dexie"
 
 import type { Project, Plot, CoveragePlot, Transect, Synchronization, COT } from "./types"
 
-const db = new Dexie("Geobiota", { indexedDB, IDBKeyRange }) as Dexie & {
+const db = new Dexie("Geobiota") as Dexie & {
 	projects: EntityTable<Project, "id">
 	plots: EntityTable<Plot, "id">
 	coveragePlots: EntityTable<CoveragePlot, "id">
