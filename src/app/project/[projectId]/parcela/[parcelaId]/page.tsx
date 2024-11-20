@@ -55,13 +55,30 @@ export default function ParcelaPage({
 			<Card title="COT">
 				{cot.length > 0 ? (
 					<>
-						<p>COT agregado</p>
-						<p>{cot[0].id}</p>
+						<p className="text-sm text-neutral-400">COT agregado</p>
 
-						<p>Grupo 1</p>
-						<p>{new Date(cot[0].group1.date).toLocaleDateString()}</p>
-						<p>{cot[0].group1.gps.latitude}</p>
-						<p>{cot[0].group1.gps.longitude}</p>
+						<p className="text-sm text-neutral-400">Grupo 1</p>
+						<p className="text-sm text-neutral-400">
+							{new Date(cot[0].group1.date).toLocaleDateString()}
+						</p>
+						<p className="text-sm text-neutral-400">{cot[0].group1.gps.latitude}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group1.gps.longitude}</p>
+
+						<p className="text-sm text-neutral-400">Grupo 2</p>
+						<p className="text-sm text-neutral-400">{cot[0].group2.formation}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group2.cover}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group2.spsTerrain.join(", ")}</p>
+
+						<p className="text-sm text-neutral-400">Grupo 3</p>
+						<p className="text-sm text-neutral-400">{cot[0].group3.exposition}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group3.drainage}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group3.topography}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group3.susbtract}</p>
+
+						<p className="text-sm text-neutral-400">Grupo 4</p>
+						<p className="text-sm text-neutral-400">{cot[0].group4?.development}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group4?.origin}</p>
+						<p className="text-sm text-neutral-400">{cot[0].group4?.sanitaryStatus}</p>
 
 						<Link href={`/project/${projectId}/parcela/${parcelaId}/cot`}>
 							<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
@@ -70,12 +87,40 @@ export default function ParcelaPage({
 						</Link>
 					</>
 				) : (
-					<Link href={`/project/${projectId}/parcela/${parcelaId}/cot`}>
-						<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
-							Agregar COT
-						</Button>
-					</Link>
+					<>
+						<Link href={`/project/${projectId}/parcela/${parcelaId}/cot`}>
+							<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
+								Agregar COT
+							</Button>
+						</Link>
+
+						<Link href={`/project/${projectId}/parcela/${parcelaId}/forma-de-vida`}>
+							<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
+								Forma de vida
+							</Button>
+						</Link>
+					</>
 				)}
+			</Card>
+
+			<Card title="Transectos">
+				<p className="text-sm text-neutral-400">Transectos agregados</p>
+
+				<Link href={`/project/${projectId}/parcela/${parcelaId}/transectos`}>
+					<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
+						Agregar Transectos
+					</Button>
+				</Link>
+			</Card>
+
+			<Card title="Parcela de cobertura">
+				<p className="text-sm text-neutral-400">Parcela de cobertura agregada</p>
+
+				<Link href={`/project/${projectId}/parcela/${parcelaId}/cobertura`}>
+					<Button className="w-full bg-black/30 text-base hover:bg-black/50" size={"lg"}>
+						Agregar Parcela de cobertura
+					</Button>
+				</Link>
 			</Card>
 		</main>
 	)
