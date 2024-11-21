@@ -13,15 +13,23 @@ import { Input } from "@/components/ui/input"
 import { db } from "@/db"
 import { sendData } from "@/lib/sendData"
 import { useToast } from "@/hooks/use-toast"
+import { COT } from "@/db/types"
 
 export default function HomePage() {
 	const [online, setOnline] = useState<boolean>(false)
 	const [geolocation, setGeolocation] = useState<string>("")
 	const [searchTerm, setSearchTerm] = useState<string>("")
+	const [cots, setCots] = useState<COT[]>([])
 
 	const { toast } = useToast()
 
 	useEffect(() => {
+		const fetchCots = async () => {
+			const cots = await db.cots.toArray()
+
+			setCots(cots)
+		}
+
 		setOnline(navigator.onLine)
 
 		getGeolocation()
@@ -29,6 +37,8 @@ export default function HomePage() {
 				setGeolocation(position.coords.latitude + ", " + position.coords.longitude)
 			)
 			.catch((error) => console.log(error))
+
+		void fetchCots()
 	}, [])
 
 	const syncData = async () => {
@@ -144,6 +154,10 @@ export default function HomePage() {
 						<section className="flex w-full flex-col gap-4 lg:w-1/2">
 							<div className="rounded-sm bg-primary-g p-4 text-white">
 								<h2 className="text-2xl font-bold">Acciones</h2>
+
+								<p className="text-sm text-neutral-300">
+									Se han encontrado {cots.length} cotizaciones en el dispositivo.
+								</p>
 
 								<div className="my-2 h-px w-full bg-white/40" />
 
