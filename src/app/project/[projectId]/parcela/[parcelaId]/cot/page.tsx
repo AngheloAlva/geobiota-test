@@ -19,10 +19,15 @@ import { cobOptions } from "@/lib/consts/cob"
 import { useToast } from "@/hooks/use-toast"
 import { useEffect, useState } from "react"
 import { PLOTS } from "@/lib/consts/plots"
+import { es } from "date-fns/locale"
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { db } from "@/db"
 import { z } from "zod"
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -36,6 +41,7 @@ import {
 	IoTrashBinOutline,
 	IoLocationOutline,
 	IoArrowBackOutline,
+	IoCalendarOutline,
 } from "react-icons/io5"
 import {
 	Form,
@@ -168,9 +174,21 @@ export default function CotPage({
 		}
 	}, [form.watch("group2.formation")])
 
-	const onSubmit = async (values: z.infer<typeof createCotSchema>) => {
-		console.log(values)
+	useEffect(() => {
+		if (Object.keys(form.formState.errors).length > 0) {
+			const errorMessages = Object.values(form.formState.errors)
+				.flatMap((group) => Object.values(group).map((error) => error.message))
+				.join(", ")
 
+			toast({
+				title: "Error",
+				description: errorMessages,
+				variant: "destructive",
+			})
+		}
+	}, [form.formState.errors])
+
+	const onSubmit = async (values: z.infer<typeof createCotSchema>) => {
 		try {
 			await db.cots
 				.add({
@@ -293,16 +311,41 @@ export default function CotPage({
 												control={form.control}
 												name="group1.date"
 												render={({ field }) => (
-													<FormItem>
+													<FormItem className="flex flex-col gap-0.5 pt-2">
 														<FormLabel>Fecha</FormLabel>
-														<FormControl>
-															<Input
-																type="date"
-																className="border-black/20 bg-black/40"
-																{...field}
-																value={field.value?.toISOString().split("T")[0]}
-															/>
-														</FormControl>
+														<Popover>
+															<PopoverTrigger asChild>
+																<FormControl>
+																	<Button
+																		variant={"outline"}
+																		className={cn(
+																			"w-full border-black/20 bg-black/40 pl-3 text-left font-normal hover:bg-black/60 hover:text-white",
+
+																			!field.value && "text-muted-foreground"
+																		)}
+																	>
+																		{field.value ? (
+																			format(field.value, "PPP", { locale: es })
+																		) : (
+																			<span>Pick a date</span>
+																		)}
+																		<IoCalendarOutline className="ml-auto h-4 w-4 opacity-50" />
+																	</Button>
+																</FormControl>
+															</PopoverTrigger>
+															<PopoverContent
+																className="w-auto border-black/20 bg-primary-g p-0 text-white"
+																align="start"
+															>
+																<Calendar
+																	mode="single"
+																	selected={field.value}
+																	onSelect={field.onChange}
+																	disabled={(date) => date > new Date()}
+																	initialFocus
+																/>
+															</PopoverContent>
+														</Popover>
 														<FormMessage />
 													</FormItem>
 												)}
@@ -322,7 +365,7 @@ export default function CotPage({
 												)}
 											/>
 
-											<FormItem>
+											{/* <FormItem>
 												<FormLabel>Imagen</FormLabel>
 												<FormControl>
 													<Input
@@ -333,7 +376,7 @@ export default function CotPage({
 													/>
 												</FormControl>
 												<FormMessage />
-											</FormItem>
+											</FormItem> */}
 
 											<FormField
 												control={form.control}

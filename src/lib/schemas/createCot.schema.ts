@@ -26,8 +26,8 @@ export const createCotSchema = z.object({
 		intervention: z.string().min(1, { message: "Intervención es requerida" }),
 	}),
 	group4: z.object({
-		origin: z.string().min(1, { message: "Origen es requerido" }).optional(),
-		development: z.string().min(1, { message: "Desarrollo es requerido" }).optional(),
+		origin: z.string().optional(),
+		development: z.string().optional(),
 		sanitaryStatus: z.string().min(1, { message: "Estado sanitario es requerido" }),
 	}),
 })

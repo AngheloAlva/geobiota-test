@@ -66,7 +66,8 @@ export default async function ProjectPage({
 
 							<div className="mt-4 flex w-full flex-col gap-2">
 								{PLOTS.filter((plot) => plot.projectId === projectId).map((plot) => (
-									<div
+									<Link
+										href={`/project/${projectId}/parcela/${plot.id}`}
 										key={plot.id}
 										className="flex justify-between gap-0.5 rounded-sm bg-primary-g px-4 py-3 shadow transition-all hover:brightness-90"
 									>
@@ -94,12 +95,10 @@ export default async function ProjectPage({
 										</p> */}
 
 											<div className="flex gap-2">
-												<Link href={`/project/${projectId}/parcela/${plot.id}`}>
-													<IoArrowForwardCircleOutline className="text-3xl text-neutral-300 transition-colors hover:text-white" />
-												</Link>
+												<IoArrowForwardCircleOutline className="text-3xl text-neutral-300 transition-colors hover:text-white" />
 											</div>
 										</div>
-									</div>
+									</Link>
 								))}
 							</div>
 						</section>

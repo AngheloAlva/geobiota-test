@@ -93,7 +93,7 @@ export default function HomePage() {
 
 				<div className="flex w-full flex-col sm:h-screen sm:w-1/2">
 					<section className="flex h-full w-full flex-col bg-primary-g p-4 pb-10 text-white">
-						<h2 className="text-2xl font-bold">Lista de Projectos</h2>
+						<h2 className="text-2xl font-bold">Lista de Proyectos</h2>
 						<p className="text-sm font-medium text-text-dark md:text-base">
 							Aquí podrás ver todos los proyectos registrados y acceder a cada uno de ellos.
 						</p>

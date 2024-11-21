@@ -114,9 +114,9 @@ export default function ParcelaPage({
 							<Card title="COT" className="rounded-sm bg-primary-g px-4 py-3 shadow">
 								{cot.length > 0 ? (
 									<>
-										<p className="text-sm text-neutral-400">COT agregado</p>
+										<p className="text-sm font-medium text-neutral-300">COT agregado:</p>
 
-										<p className="text-sm text-neutral-400">Grupo 1</p>
+										<p className="text-sm text-neutral-400">{cot[0].group1.quadrille}</p>
 										<p className="text-sm text-neutral-400">
 											{new Date(cot[0].group1.date).toLocaleDateString()}
 										</p>
