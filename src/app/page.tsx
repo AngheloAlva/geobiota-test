@@ -12,11 +12,14 @@ import Logo from "@/components/icons/Logo"
 import { Input } from "@/components/ui/input"
 import { db } from "@/db"
 import { sendData } from "@/lib/sendData"
+import { useToast } from "@/hooks/use-toast"
 
 export default function HomePage() {
 	const [online, setOnline] = useState<boolean>(false)
 	const [geolocation, setGeolocation] = useState<string>("")
 	const [searchTerm, setSearchTerm] = useState<string>("")
+
+	const { toast } = useToast()
 
 	useEffect(() => {
 		setOnline(navigator.onLine)
@@ -29,9 +32,24 @@ export default function HomePage() {
 	}, [])
 
 	const syncData = async () => {
-		const COT = await db.cots.toArray()
+		try {
+			const COT = await db.cots.toArray()
 
-		sendData(COT[0])
+			sendData(COT[0])
+
+			toast({
+				title: "Sincronización exitosa",
+				description: "Los datos han sido sincronizados correctamente",
+			})
+		} catch (error) {
+			console.log(error)
+
+			toast({
+				title: "Error al sincronizar",
+				description: "Hubo un error al sincronizar los datos",
+				variant: "destructive",
+			})
+		}
 	}
 
 	const filteredProjects = PROJECTS.filter((project) =>

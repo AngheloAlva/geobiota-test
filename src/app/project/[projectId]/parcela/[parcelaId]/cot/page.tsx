@@ -177,7 +177,7 @@ export default function CotPage({
 					...values,
 					group1: {
 						...values.group1,
-						hour: Number(values.group1.hour),
+						hour: values.group1.hour,
 						gps: {
 							latitude: Number(values.group1.gps.latitude),
 							longitude: Number(values.group1.gps.longitude),

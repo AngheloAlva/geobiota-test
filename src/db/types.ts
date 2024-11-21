@@ -35,7 +35,7 @@ export interface COT {
 	group1: {
 		quadrille: string
 		date: Date
-		hour: number
+		hour: string
 		gps: {
 			latitude: number
 			longitude: number
