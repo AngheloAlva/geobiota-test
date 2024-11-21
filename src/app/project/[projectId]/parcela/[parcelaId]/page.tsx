@@ -158,15 +158,11 @@ export default function ParcelaPage({
 									</>
 								) : (
 									<>
-										{/* <Link href={`/project/${project?.id}/parcela/${parcelaId}/transectos`}> */}
-										<Button
-											disabled
-											className="w-full bg-secondary-2-g text-base text-white"
-											size={"lg"}
-										>
-											Agregar Transectos <IoAddOutline />
-										</Button>
-										{/* </Link> */}
+										<Link href={`/project/${project?.id}/parcela/${parcelaId}/transectos`}>
+											<Button className="w-full bg-secondary-2-g text-base text-white" size={"lg"}>
+												Agregar Transectos <IoAddOutline />
+											</Button>
+										</Link>
 									</>
 								)}
 							</Card>
@@ -175,11 +171,15 @@ export default function ParcelaPage({
 								title="Parcela de cobertura"
 								className="rounded-sm bg-primary-g px-4 py-3 shadow"
 							>
-								<Link href={`/project/${project?.id}/parcela/${parcelaId}/cobertura`}>
-									<Button className="w-full bg-secondary-2-g text-base text-white" size={"lg"}>
-										Agregar Parcela de cobertura <IoAddOutline />
-									</Button>
-								</Link>
+								{/* <Link href={`/project/${project?.id}/parcela/${parcelaId}/cobertura`}> */}
+								<Button
+									className="w-full bg-secondary-2-g text-base text-white"
+									size={"lg"}
+									disabled
+								>
+									Agregar Parcela de cobertura <IoAddOutline />
+								</Button>
+								{/* </Link> */}
 							</Card>
 						</div>
 					</div>
