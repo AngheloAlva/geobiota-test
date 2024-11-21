@@ -165,6 +165,11 @@ export default function FormaDeVidaPage({
 
 	const onSubmit = async (values: z.infer<typeof formaDeVidaSchema>) => {
 		console.log(values)
+
+		toast({
+			title: "Forma de Vida registrada correctamente",
+			description: "La forma de vida ha sido registrada correctamente",
+		})
 	}
 
 	return (
