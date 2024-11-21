@@ -127,6 +127,12 @@ export default function ParcelaPage({
 												Editar COT
 											</Button>
 										</Link>
+
+										<Link href={`/project/${project?.id}/parcela/${parcelaId}/forma-de-vida`}>
+											<Button size={"lg"} className="w-full bg-secondary-2-g text-base text-white">
+												Forma de vida <IoAddOutline />
+											</Button>
+										</Link>
 									</>
 								) : (
 									<>

@@ -38,6 +38,8 @@ export default function HomePage() {
 			const res = await sendData(COT[0])
 
 			if (res) {
+				await db.cots.delete(COT[0].id)
+
 				toast({
 					title: "Sincronización exitosa",
 					description: "Los datos han sido sincronizados correctamente",
