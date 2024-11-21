@@ -12,16 +12,11 @@ export default function Card({
 	children: React.ReactNode
 }): React.ReactElement {
 	return (
-		<section
-			className={cn(
-				"flex h-full w-full flex-col rounded-2xl bg-black/30 p-4 text-white",
-				className
-			)}
-		>
+		<section className={cn("flex h-fit w-full flex-col text-white", className)}>
 			<h2 className="text-2xl font-bold">{title}</h2>
-			{description && <p className="text-sm text-neutral-400">{description}</p>}
+			{description && <p className="text-sm font-medium text-text-dark">{description}</p>}
 
-			<div className="mt-4 flex w-full flex-col gap-4">{children}</div>
+			<div className="mt-4 flex w-full flex-col gap-2">{children}</div>
 		</section>
 	)
 }
