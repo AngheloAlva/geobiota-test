@@ -93,6 +93,20 @@ export default function FormaDeVidaPage({
 		},
 	})
 
+	useEffect(() => {
+		if (Object.keys(form.formState.errors).length > 0) {
+			const errorMessages = Object.values(form.formState.errors)
+				.flatMap((group) => Object.values(group).map((error) => error.message))
+				.join(", ")
+
+			toast({
+				title: "Error",
+				description: errorMessages,
+				variant: "destructive",
+			})
+		}
+	}, [form.formState.errors])
+
 	const { fields, remove } = useFieldArray({
 		control: form.control,
 		name: "tramos",

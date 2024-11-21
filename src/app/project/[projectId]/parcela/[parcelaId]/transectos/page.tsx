@@ -81,6 +81,20 @@ export default function TransectosPage({
 		void fetchCot()
 	}, [params])
 
+	useEffect(() => {
+		if (Object.keys(form.formState.errors).length > 0) {
+			const errorMessages = Object.values(form.formState.errors)
+				.flatMap((group) => Object.values(group).map((error) => error.message))
+				.join(", ")
+
+			toast({
+				title: "Error",
+				description: errorMessages,
+				variant: "destructive",
+			})
+		}
+	}, [form.formState.errors])
+
 	const calculateCobertura = (inicio: number, fin: number, longitud: number) => {
 		const tramo = fin - inicio
 		return longitud > 0 ? (tramo / longitud) * 100 : 0

@@ -158,11 +158,15 @@ export default function ParcelaPage({
 									</>
 								) : (
 									<>
-										<Link href={`/project/${project?.id}/parcela/${parcelaId}/transectos`}>
-											<Button className="w-full bg-secondary-2-g text-base text-white" size={"lg"}>
-												Agregar Transectos <IoAddOutline />
-											</Button>
-										</Link>
+										{/* <Link href={`/project/${project?.id}/parcela/${parcelaId}/transectos`}> */}
+										<Button
+											disabled
+											className="w-full bg-secondary-2-g text-base text-white"
+											size={"lg"}
+										>
+											Agregar Transectos <IoAddOutline />
+										</Button>
+										{/* </Link> */}
 									</>
 								)}
 							</Card>
