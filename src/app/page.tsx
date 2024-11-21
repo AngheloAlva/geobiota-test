@@ -156,7 +156,7 @@ export default function HomePage() {
 								<h2 className="text-2xl font-bold">Acciones</h2>
 
 								<p className="text-sm text-neutral-300">
-									Se han encontrado {cots.length} cotizaciones en el dispositivo.
+									Se han encontrado {cots.length} COTs en el dispositivo.
 								</p>
 
 								<div className="my-2 h-px w-full bg-white/40" />
