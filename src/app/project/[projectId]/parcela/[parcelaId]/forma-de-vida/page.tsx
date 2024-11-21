@@ -36,6 +36,7 @@ import { lbSpecies } from "@/lib/consts/lbSpecies"
 import { sSpecies } from "@/lib/consts/sSpecies"
 import { hSpecies } from "@/lib/consts/hSpecies"
 import Link from "next/link"
+import { useToast } from "@/hooks/use-toast"
 
 const formaDeVidaSchema = z.object({
 	formaDeVida: z.string().min(1, { message: "Forma de vida es requerida" }),
@@ -68,6 +69,8 @@ export default function FormaDeVidaPage({
 	const [project, setProject] = useState<Project | null>(null)
 	const [species, setSpecies] = useState<string[]>([])
 	const [tramos, setTramos] = useState<string[]>([])
+
+	const { toast } = useToast()
 
 	useEffect(() => {
 		const fetchData = async () => {
