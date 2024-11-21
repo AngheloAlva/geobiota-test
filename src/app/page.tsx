@@ -35,12 +35,20 @@ export default function HomePage() {
 		try {
 			const COT = await db.cots.toArray()
 
-			sendData(COT[0])
+			const res = await sendData(COT[0])
 
-			toast({
-				title: "Sincronización exitosa",
-				description: "Los datos han sido sincronizados correctamente",
-			})
+			if (res) {
+				toast({
+					title: "Sincronización exitosa",
+					description: "Los datos han sido sincronizados correctamente",
+				})
+			} else {
+				toast({
+					title: "Error al sincronizar",
+					description: "Hubo un error al sincronizar los datos",
+					variant: "destructive",
+				})
+			}
 		} catch (error) {
 			console.log(error)
 

@@ -193,7 +193,7 @@ export default function CotPage({
 				.then((id) => {
 					toast({
 						title: "COT agregado",
-						description: `COT con ID ${id} agregado correctamente. Ahora puedes agregar el grupo 2`,
+						description: `COT agregado correctamente.`,
 					})
 				})
 
